@@ -1,3 +1,6 @@
+import org.gradle.initialization.Environment
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -12,6 +15,7 @@ android {
         buildConfig=true
         dataBinding=true
     }
+
     defaultConfig {
         applicationId = "com.example.tmdb_client_app"
         minSdk = 26
@@ -21,7 +25,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String","API_KEY","\"7c4006e19739a35b81f34682780bf493\"")
+        var p=Properties()
+        p.load(project.rootProject.file("local.properties").inputStream())
+
+        buildConfigField("String", "API_KEY", "\"${p.getProperty("API_KEY")}\"")
         buildConfigField("String","BASE_URL","\"https://api.themoviedb.org/3/\"")
 
 
